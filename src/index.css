@@ -1,0 +1,163 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Noto Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --color-brand-50: #fcf2f5;
+  --color-brand-100: #f8e1e8;
+  --color-brand-200: #f0c3d0;
+  --color-brand-300: #e095ab;
+  --color-brand-400: #cc6584;
+  --color-brand-500: #b43a60;
+  --color-brand-600: #9c1f47;
+  --color-brand-700: #87143a;
+  --color-brand-800: #6f0f2f;
+  --color-brand-900: #520a22;
+}
+
+:root {
+  color-scheme: light;
+}
+body {
+  @apply bg-slate-50 font-sans text-slate-900 antialiased;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold whitespace-nowrap transition focus-visible:ring-2 focus-visible:ring-brand-500/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+  .btn-primary {
+    @apply border-brand-700 bg-gradient-to-b from-brand-600 to-brand-800 text-white shadow-sm hover:from-brand-700 hover:to-brand-900;
+  }
+  .btn-outline {
+    @apply border-brand-600 bg-white text-brand-700 hover:bg-brand-50;
+  }
+  .btn-ghost {
+    @apply border-transparent bg-transparent text-slate-700 hover:bg-slate-100;
+  }
+  .btn-danger {
+    @apply border-red-700 bg-red-700 text-white hover:bg-red-800;
+  }
+  .input {
+    @apply block h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-[15px] text-slate-900 shadow-xs placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none disabled:cursor-not-allowed disabled:bg-slate-100;
+  }
+  textarea.input {
+    @apply h-auto py-2;
+  }
+  .input.invalid {
+    @apply border-red-500 ring-2 ring-red-500/15;
+  }
+  .data-table {
+    @apply w-full border-collapse text-[15px];
+  }
+  .data-table th {
+    @apply border-b border-brand-200 bg-brand-100/80 px-3 py-2.5 text-left text-sm font-bold text-slate-900;
+  }
+  .data-table td {
+    @apply border-b border-slate-100 px-3 py-2.5 align-middle;
+  }
+  .data-table tbody tr:hover td {
+    @apply bg-brand-50/50;
+  }
+  .data-table tbody tr.selected td {
+    @apply bg-brand-100/70;
+  }
+  .data-table.compact td,
+  .data-table.compact th {
+    @apply py-2;
+  }
+  .doc-table th {
+    @apply bg-brand-700 text-white;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.animate-in {
+  animation: toast-in 0.18s ease-out;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body,
+  main {
+    background: white !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  .input {
+    border-color: #999 !important;
+    box-shadow: none !important;
+  }
+  section {
+    break-inside: avoid;
+  }
+}
+
+/* ---------- Sidebar menu: bigger, bold, animated ---------- */
+.side-section {
+  margin: 14px 10px 6px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #9f7b89; display: flex; align-items: center; gap: 8px;
+  animation: side-in 0.45s calc(var(--i) * 40ms) cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+.side-section::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(159, 123, 137, 0.35), transparent); }
+.side-link {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; align-items: center; gap: 12px; padding: 7px 12px 7px 7px; margin: 2px 0; border-radius: 14px;
+  font-size: 15px; font-weight: 650; letter-spacing: 0.005em; color: #3b1a26;
+  transition: color 0.2s, transform 0.2s, box-shadow 0.25s, background-color 0.2s;
+  animation: side-in 0.45s calc(var(--i) * 40ms) cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+.side-link > * { position: relative; z-index: 1; }
+/* Icon sits in a tile of the page's own colour */
+.side-link .side-ico {
+  display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border-radius: 11px; color: #fff;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: 0 4px 10px -3px var(--c1), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* hover: soft wash of the page colour sweeps in */
+.side-link::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; border-radius: inherit;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--c1) 16%, white), rgba(255, 255, 255, 0.7));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.side-link:hover::before { transform: scaleX(1); }
+.side-link:hover { color: var(--c2); transform: translateX(3px); }
+.side-link:hover .side-ico { transform: rotate(-8deg) scale(1.1); }
+/* selected page: full gradient of its colour, white tile, glowing shine */
+.side-link.active {
+  color: #fff; background: linear-gradient(110deg, var(--c1), var(--c2));
+  box-shadow: 0 10px 22px -8px var(--c1); transform: none;
+}
+.side-link.active .side-ico { background: rgba(255, 255, 255, 0.22); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45); }
+.side-link.active::before {
+  inset: 0 auto 0 -45%; width: 32%; transform: skewX(-20deg); border-radius: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: side-shine 3.8s ease-in-out infinite; transition: none;
+}
+.side-link.active::after {
+  content: ''; position: absolute; right: 12px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; z-index: 2;
+  background: #fff; box-shadow: 0 0 8px rgba(255, 255, 255, 0.9); animation: side-dot 0.4s ease-out backwards;
+}
+@keyframes side-in { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
+@keyframes side-shine { 0% { left: -45%; } 55%, 100% { left: 135%; } }
+@keyframes side-dot { from { transform: scale(0); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .side-link, .side-section, .side-link::before, .side-link::after, .side-link .side-ico { animation: none !important; transition: none !important; } }
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(14deg); }
+  40% { transform: rotate(-12deg); }
+  60% { transform: rotate(8deg); }
+  80% { transform: rotate(-4deg); }
+}
